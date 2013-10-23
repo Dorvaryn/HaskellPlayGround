@@ -5,13 +5,21 @@ import Data.List
 
 groupCases :: [String] -> Maybe [(Int, [Int])] -> Maybe [(Int, [Int])]
 groupCases [] results = results
-groupCases (total:_:items:rest) (Just results) = groupCases rest (Just ((read total, map read $ words items):results))
+groupCases (total:_:items:rest) (Just results) = groupCases rest (Just ((read total, map read $  words items):results))
 groupCases _ _ = Nothing
 
-getAllResults :: [(Int, [Int])] -> [(Int, Int)] -> [(Int,Int)]
+getAllResults :: [(Int, [Int])] -> [(Maybe Int, Maybe Int)] -> [(Maybe Int, Maybe Int)]
 getAllResults [] results = results
 getAllResults ((total, items):rest) results = getAllResults rest ((processItems items total):results)
-    where processItems items total = getValidPair (pairs items) total
+    where processItems items total = getPositions (getValidPair (pairs items) total) items
+
+getPositions :: (Int, Int) -> [Int] -> (Maybe Int, Maybe Int)
+getPositions (first, second) items 
+                                    | elemIndices first items == elemIndices second items = getOneIndexedPair (elemIndex first items) (Just (head . tail $ elemIndices second items))
+                                    | otherwise = getOneIndexedPair (elemIndex first items) (elemIndex second items)
+
+getOneIndexedPair :: Maybe Int -> Maybe Int -> (Maybe Int, Maybe Int)
+getOneIndexedPair first second = (fmap (1+) first, fmap(1+) second)
 
 getValidPair :: [(Int, Int)] -> Int -> (Int, Int)
 getValidPair [] _ = error "you suck ben!"
