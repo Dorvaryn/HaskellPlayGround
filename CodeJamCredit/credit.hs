@@ -48,13 +48,16 @@ sortPair (x, y)
 uniques :: Ord a => [(a, a)] -> [(a, a)]
 uniques =  map head . group . sort . map sortPair
 
+shift :: [a] -> [a]
+shift [] = []
+shift (x:xs) = xs ++ [x]
+
+allRotations :: [a] -> [[a]]
+allRotations l = take (length l) (iterate shift l)
+
 pairs :: [Int] -> [(Int, Int)]
 pairs [] = []
-pairs xs = uniques . map pickTwo $ permutations xs
-
-pickTwo :: [Int] -> (Int, Int)
-pickTwo (first:second:_) = (first, second)
-pickTwo _ = (-1, -1)
+pairs xs = uniques . concat $ map (zip xs) (allRotations xs)
 
 isValid :: (Int, Int) -> Int -> Bool
 isValid (first, second) total
