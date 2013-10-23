@@ -3,6 +3,13 @@ module Main where
 import System.Environment
 import Data.List
 
+showCustom :: Show a => (Maybe a, Maybe a) -> String
+showCustom (f,s) = showMaybe f ++ " " ++ showMaybe s
+
+showMaybe :: Show a => (Maybe a) -> String
+showMaybe (Just a) = show a
+showMaybe Nothing = "Nothing"
+
 groupCases :: [String] -> Maybe [(Int, [Int])] -> Maybe [(Int, [Int])]
 groupCases [] results = results
 groupCases (total:_:items:rest) (Just results) = groupCases rest (Just ((read total, map read $  words items):results))
@@ -13,18 +20,19 @@ getAllResults [] results = results
 getAllResults ((total, items):rest) results = getAllResults rest ((processItems items total):results)
     where processItems items total = getPositions (getValidPair (pairs items) total) items
 
-getPositions :: (Int, Int) -> [Int] -> (Maybe Int, Maybe Int)
-getPositions (first, second) items 
+getPositions :: Maybe (Int, Int) -> [Int] -> (Maybe Int, Maybe Int)
+getPositions Nothing items = (Nothing, Nothing)
+getPositions (Just (first, second)) items 
                                     | elemIndices first items == elemIndices second items = getOneIndexedPair (elemIndex first items) (Just (head . tail $ elemIndices second items))
                                     | otherwise = getOneIndexedPair (elemIndex first items) (elemIndex second items)
 
 getOneIndexedPair :: Maybe Int -> Maybe Int -> (Maybe Int, Maybe Int)
-getOneIndexedPair first second = (fmap (1+) first, fmap(1+) second)
+getOneIndexedPair first second = sortPair (fmap (1+) first, fmap(1+) second)
 
-getValidPair :: [(Int, Int)] -> Int -> (Int, Int)
-getValidPair [] _ = error "you suck ben!"
+getValidPair :: [(Int, Int)] -> Int -> Maybe (Int, Int)
+getValidPair [] _ = Nothing
 getValidPair (x:xs) total
-                       | isValid x total = x
+                       | isValid x total = Just x
                        | otherwise = getValidPair xs total
 
 sortPair :: Ord a => (a, a) -> (a, a)
@@ -57,4 +65,4 @@ main = do
     then
         putStrLn "Invalid data input"
     else
-        putStrLn $ unlines . map show $ getAllResults (castJust cases) []
+        putStrLn $ unlines . map showCustom $ getAllResults (castJust cases) []
