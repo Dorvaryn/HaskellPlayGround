@@ -3,6 +3,11 @@ module Main where
 import System.Environment
 import Data.List
 
+prefixes = ["Case #" ++ show n ++ ": " | n <- [1..]]
+
+prefixLines :: [String] -> [String]
+prefixLines = zipWith (++) prefixes
+
 showCustom :: Show a => (Maybe a, Maybe a) -> String
 showCustom (f,s) = showMaybe f ++ " " ++ showMaybe s
 
@@ -65,4 +70,4 @@ main = do
     then
         putStrLn "Invalid data input"
     else
-        putStrLn $ unlines . map showCustom $ getAllResults (castJust cases) []
+        putStrLn $ unlines . prefixLines . map showCustom $ getAllResults (castJust cases) []
