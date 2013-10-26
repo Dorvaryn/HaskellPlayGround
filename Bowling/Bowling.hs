@@ -1,7 +1,7 @@
 module Bowling ( score )
 where
 
-score :: [Int] -> Int
+score :: (Eq a, Num a) => [a] -> a
 score [] = 0
 score (x:[]) = x 
 score (x:y:[]) = x + y
