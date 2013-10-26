@@ -1,4 +1,4 @@
-module ScorerTest where
+module Bowling where
 
 import Test.HUnit
 import Bowling
