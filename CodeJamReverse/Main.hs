@@ -1,10 +1,8 @@
-module Main where
+module Main 
+where
 
 import System.Environment
-import Data.List
-
-reverseWords :: String -> String
-reverseWords = unwords . reverse . words 
+import ReverseWords
 
 prefixes = ["Case #" ++ show n ++ ": " | n <- [1..]]
 
