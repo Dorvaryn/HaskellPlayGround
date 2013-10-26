@@ -20,6 +20,7 @@ groupCases [] results = results
 groupCases (total:_:items:rest) (Just results) = groupCases rest (Just ((read total, map read $  words items):results))
 groupCases _ _ = Nothing
 
+main :: IO()
 main = do
     (fileName:_) <- getArgs
     file <- readFile fileName
