@@ -1,7 +1,5 @@
-module Main where
-
-
-iterations = [1..100]
+module FizzBuzz (fizzbuzz)
+where
 
 showFizzBuzz :: (Integral a, Show a) => a -> String
 showFizzBuzz i 
@@ -14,5 +12,6 @@ showFizz i
            | i `mod` 5 == 0 = "FizzBuzz!"
            | otherwise = "Fizz!"
 
-main = do
-    putStrLn . unlines $ map showFizzBuzz iterations
+fizzbuzz :: (Integral a, Show a) => [a] -> [String]
+fizzbuzz = map showFizzBuzz
+
