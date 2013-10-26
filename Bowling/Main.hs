@@ -1,7 +1,7 @@
 import Bowling
 
 testAll :: Int -> Int -> Bool
-testAll each expected = (score . replicate 10 $ each) == expected
+testAll each expected = (score . replicate 20 $ each) == expected
 
 tests = [
          testAll 0 0, 
