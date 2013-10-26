@@ -14,4 +14,3 @@ showFizz i
 
 fizzbuzz :: (Integral a, Show a) => [a] -> [String]
 fizzbuzz = map showFizzBuzz
-
