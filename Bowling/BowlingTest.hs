@@ -3,7 +3,7 @@ module BowlingTest where
 import Test.HUnit
 import Bowling
 
-main :: IO()
+main :: IO Counts
 main = runTestTT $ TestList [
                              allGutters, 
                              allOnes,
