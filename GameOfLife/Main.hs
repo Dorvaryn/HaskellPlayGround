@@ -20,8 +20,8 @@ readWorld x (l:lines) = (readLine x 0 l)++(readWorld (x+1) lines)
 showLine :: [Cell] -> String
 showLine [] = ""
 showLine (c:cells)
-                 | snd c == Alive = "*"
-                 | otherwise = "."
+                 | snd c == Alive = '*':showLine cells
+                 | otherwise = '.':showLine cells
 
 showWorld :: Int -> World -> [String]
 showWorld _ [] = []
@@ -34,5 +34,5 @@ main = do
     file <- readFile fileName
     let width = length . head $ lines file
     let world = readWorld 0 $ lines file
-    print . unlines $ showWorld width $ step world world
+    putStrLn . unlines $ showWorld width $ step world world
 
