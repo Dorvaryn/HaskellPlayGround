@@ -33,7 +33,7 @@ playNTimes :: Int -> World -> World
 playNTimes 0 world = world
 playNTimes n world = playNTimes (n-1) (step world world)
 
-play :: Int -> Int-> World -> IO()
+play :: Int -> Double -> World -> IO()
 play width time world = do
     system $ "sleep " ++ (show time)
     system "clear"
