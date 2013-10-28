@@ -1,4 +1,4 @@
-module WorldOfLife
+module GameOfLife
 where
 
 import Data.List
@@ -20,7 +20,7 @@ numberAlive (cell:cells) game
                                   | otherwise = numberAlive cells game
 
 step :: World -> World -> World
-step [] world = []
+step [] _ = []
 step (cell:cells) world
                         | (snd cell == Alive) && (numberAlive (neighbours cell) world == 2) = (fst cell, Alive):(step cells world)
                         | (numberAlive (neighbours cell) world == 3) = (fst cell, Alive):(step cells world)
