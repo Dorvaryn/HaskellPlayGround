@@ -1,0 +1,13 @@
+Name:                FizzBuzz
+Version:             1.0
+Description:         FizzBuzz Kata in Haskell
+License:             MIT
+Author:              Benjamin Augustin
+Build-Type:          Simple
+Cabal-Version:       >=1.2
+
+Executable fizzbuzz
+    Main-is:           Main.hs
+    ghc-options:
+          -Wall -Werror
+    Build-Depends:     base
