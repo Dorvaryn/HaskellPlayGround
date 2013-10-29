@@ -1,14 +1,15 @@
-module Fibonacci (slowestFibonacci, slowFibonacci, canonicalFibonacci, fibonacci)
+module Fibonacci
 where
 
-slowestFibonacci :: [Integer]
-slowestFibonacci = [recursiveNthFib n | n <- [0..]]
+import Matrix
+import Data.List
+import Data.Bits
 
-recursiveNthFib :: (Eq a, Num a) => a -> a
-recursiveNthFib n
+slowestFibonacci :: Integer -> Integer
+slowestFibonacci n
                    | n == 0    = 0
                    | n == 1    = 1
-                   | otherwise = recursiveNthFib (n-1) + recursiveNthFib (n-2)
+                   | otherwise = slowestFibonacci (n-1) + slowestFibonacci (n-2)
 
 slowFibonacci :: [Integer]
 slowFibonacci = 0 : 1 : [slowFibonacci!!(n-1) + slowFibonacci!!(n-2) | n <- [2..]]
@@ -18,3 +19,18 @@ canonicalFibonacci = 0 : 1 : zipWith (+) canonicalFibonacci (tail canonicalFibon
 
 fibonacci :: [Integer]
 fibonacci = 0 : scanl (+) 1 fibonacci
+
+
+-- Implementations under this line are not mine, examples of logarithmic implementations from haskell.org
+
+fastFibonacci :: Integer -> Integer
+fastFibonacci n = head (apply (Matrix [[0,1], [1,1]] ^ n) [0,1])
+
+fastestFibonacci :: Int -> Integer
+fastestFibonacci n = snd . foldl' fib' (1, 0) . dropWhile not $
+            [testBit n k | k <- let s = bitSize n in [s-1,s-2..0]]
+    where
+        fib' (f, g) p
+            | p         = (f*(f+2*g), ss)
+            | otherwise = (ss, g*(2*f-g))
+            where ss = f*f+g*g
