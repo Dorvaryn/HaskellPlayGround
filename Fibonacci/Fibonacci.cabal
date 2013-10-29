@@ -1,0 +1,21 @@
+Name:                Fibonacci
+Version:             1.0
+Description:         Hacks around fibonacci generation
+License:             MIT
+Author:              Benjamin Augustin
+Build-Type:          Simple
+Cabal-Version:       >=1.2
+
+Executable fibonacci
+    Main-is:           Main.hs
+    ghc-options:
+          -Wall -Werror
+    Build-Depends:     base
+
+Test-Suite fibonacci-spec
+    Type:       exitcode-stdio-1.0
+    Main-is:    Spec.hs
+    ghc-options:
+          -Wall -Werror
+    Build-Depends: base
+                 , hspec

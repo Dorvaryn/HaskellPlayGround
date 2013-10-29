@@ -4,7 +4,11 @@ import Test.Hspec
 import Fibonacci
 
 main :: IO()
-main = hspec $ do
+main = hspec spec
+
+
+spec :: Spec
+spec = do
     describe "slowestFibonacci" $ do
         it "starts with 0 and 1" $ do
             slowestFibonacci!!0 `shouldBe` 0
