@@ -27,10 +27,10 @@ fastFibonacci :: Integer -> Integer
 fastFibonacci n = head (apply (Matrix [[0,1], [1,1]] ^ n) [0,1])
 
 fastestFibonacci :: Int -> Integer
-fastestFibonacci n = snd . foldl' fib' (1, 0) . dropWhile not $
+fastestFibonacci n = snd . foldl' fib (1, 0) . dropWhile not $
             [testBit n k | k <- let s = bitSize n in [s-1,s-2..0]]
     where
-        fib' (f, g) p
+        fib (f, g) p
             | p         = (f*(f+2*g), ss)
             | otherwise = (ss, g*(2*f-g))
             where ss = f*f+g*g
