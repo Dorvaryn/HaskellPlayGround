@@ -1,4 +1,4 @@
-module Fibonacci (slowestFibonacci, slowFibonacci, fibonacci)
+module Fibonacci (slowestFibonacci, slowFibonacci, canonicalFibonacci, fibonacci)
 where
 
 slowestFibonacci :: [Integer]
@@ -10,9 +10,11 @@ recursiveNthFib n
                    | n == 1    = 1
                    | otherwise = recursiveNthFib (n-1) + recursiveNthFib (n-2)
 
-
 slowFibonacci :: [Integer]
 slowFibonacci = 0 : 1 : [slowFibonacci!!(n-1) + slowFibonacci!!(n-2) | n <- [2..]]
 
+canonicalFibonacci :: [Integer]
+canonicalFibonacci = 0 : 1 : zipWith (+) canonicalFibonacci (tail canonicalFibonacci)
+
 fibonacci :: [Integer]
-fibonacci = 0 : 1 : zipWith (+) fibonacci (tail fibonacci)
+fibonacci = 0 : scanl (+) 1 fibonacci

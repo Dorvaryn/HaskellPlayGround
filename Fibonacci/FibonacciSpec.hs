@@ -27,6 +27,15 @@ spec = do
             slowFibonacci!!5 `shouldBe` slowFibonacci!!4 + slowFibonacci!!3
         it "of 20 is 6765" $ do
             slowFibonacci!!20 `shouldBe` 6765
+    describe "canonicalFibonacci" $ do
+        it "starts with 0 and 1" $ do
+            canonicalFibonacci!!0 `shouldBe` 0
+            canonicalFibonacci!!1 `shouldBe` 1
+        it "sum the two previous terms to compute the next one" $ do
+            canonicalFibonacci!!3 `shouldBe` 2
+            canonicalFibonacci!!5 `shouldBe` canonicalFibonacci!!4 + canonicalFibonacci!!3
+        it "of 20 is 6765" $ do
+            canonicalFibonacci!!20 `shouldBe` 6765
     describe "fibonacci" $ do
         it "starts with 0 and 1" $ do
             fibonacci!!0 `shouldBe` 0
