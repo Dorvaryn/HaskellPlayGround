@@ -3,7 +3,8 @@ module Main where
 import System.Environment
 import Credit
 
-prefixes = ["Case #" ++ show n ++ ": " | n <- [1..]]
+prefixes :: [String]
+prefixes = ["Case #" ++ show n ++ ": " | n <- [1..]::[Int]]
 
 prefixLines :: [String] -> [String]
 prefixLines = zipWith (++) prefixes
@@ -27,7 +28,7 @@ main = do
     let cases = groupCases (tail $ lines file) (Just [])
     let castJust = maybe (error "Should only be called on Just a type") id
     if cases == Nothing
-    then
-        putStrLn "Invalid data input"
-    else
-        putStrLn $ unlines . prefixLines . map showCustom $ getAllResults (castJust cases) []
+        then
+            putStrLn "Invalid data input"
+        else
+            putStrLn $ unlines . prefixLines . map showCustom $ getAllResults (castJust cases) []
