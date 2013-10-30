@@ -19,3 +19,4 @@ Test-Suite fibonacci-spec
           -Wall -Werror
     Build-Depends: base
                  , hspec
+                 , QuickCheck

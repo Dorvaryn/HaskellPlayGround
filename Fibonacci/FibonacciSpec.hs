@@ -1,6 +1,7 @@
 module FibonacciSpec where
 
 import Test.Hspec
+import Test.QuickCheck
 import Fibonacci
 
 main :: IO()
@@ -49,9 +50,8 @@ spec = do
         it "starts with 0 and 1" $ do
             fastFibonacci 0 `shouldBe` 0
             fastFibonacci 1 `shouldBe` 1
-        it "sum the two previous terms to compute the next one" $ do
-            fastFibonacci 3 `shouldBe` 2
-            fastFibonacci 5 `shouldBe` fastFibonacci 4 + fastFibonacci 3
+        it "sum the two previous terms to compute the next one"
+            (property $ \ n -> n > 2 ==> fastFibonacci n == (fastFibonacci (n-1) + fastFibonacci (n-2)))
         it "of 20 is 6765" $ do
             fastFibonacci 20 `shouldBe` 6765
     describe "fastestFibonacci" $ do
@@ -61,5 +61,6 @@ spec = do
         it "sum the two previous terms to compute the next one" $ do
             fastestFibonacci 3 `shouldBe` 2
             fastestFibonacci 5 `shouldBe` fastestFibonacci 4 + fastestFibonacci 3
+        --Todo declare Arbitrary instance to reduce scope (property $ \ n -> n > 2 ==> fastestFibonacci n == (fastestFibonacci (n-1) + fastestFibonacci (n-2)))
         it "of 20 is 6765" $ do
             fastestFibonacci 20 `shouldBe` 6765
