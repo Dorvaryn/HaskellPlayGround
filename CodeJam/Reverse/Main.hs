@@ -4,7 +4,8 @@ where
 import System.Environment
 import ReverseWords
 
-prefixes = ["Case #" ++ show n ++ ": " | n <- [1..]]
+prefixes :: [String]
+prefixes = ["Case #" ++ show n ++ ": " | n <- [1..]::[Int]]
 
 prefixLines :: [String] -> [String]
 prefixLines = zipWith (++) prefixes

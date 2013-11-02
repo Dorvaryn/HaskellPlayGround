@@ -1,0 +1,13 @@
+Name:                GameOfLife
+Version:             1.0
+Description:         GameOfLife Kata in Haskell
+License:             MIT
+Author:              Benjamin Augustin
+Build-Type:          Simple
+Cabal-Version:       >=1.2
+
+Executable gameoflife
+    Main-is:           Main.hs
+    ghc-options:
+          -Wall -Werror
+    Build-Depends:     base, process

@@ -3,7 +3,6 @@ where
 
 import System.Environment
 import System.Cmd
-import Control.Monad
 import GameOfLife
 
 readCell :: Integer -> Integer -> Char -> Cell
@@ -12,12 +11,12 @@ readCell x y status
                     | otherwise = ((x, y), Dead)
 
 readLine :: Integer -> Integer -> String -> [Cell]
-readLine x y [] = []
+readLine _ _ [] = []
 readLine x y (c:cars) = (readCell x y c):(readLine x (y+1) cars)
 
 readWorld :: Integer -> [String] -> World
-readWorld x [] = []
-readWorld x (l:lines) = (readLine x 0 l)++(readWorld (x+1) lines)
+readWorld _ [] = []
+readWorld x (l:ls) = (readLine x 0 l)++(readWorld (x+1) ls)
 
 showLine :: [Cell] -> String
 showLine [] = ""
@@ -35,8 +34,8 @@ playNTimes n world = playNTimes (n-1) (step world world)
 
 play :: Int -> Double -> World -> IO()
 play width time world = do
-    system $ "sleep " ++ (show time)
-    system "clear"
+    _ <- system $ "sleep " ++ (show time)
+    _ <- system "clear"
     putStrLn . unlines $ showWorld width world
 
 display :: Int -> World -> IO()
@@ -53,7 +52,8 @@ main = do
     let world = readWorld 0 $ lines file
     let steps = read st
     let worlds = [playNTimes n world | n <- [0..steps]]
-    if rest /= [] then
-        mapM_ (play width (read $ head rest)) worlds
-    else
-        mapM_ (display width) worlds
+    if rest /= [] 
+        then
+            mapM_ (play width (read $ head rest)) worlds
+        else
+            mapM_ (display width) worlds

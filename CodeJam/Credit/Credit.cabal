@@ -1,0 +1,13 @@
+Name:                Credit
+Version:             1.0
+Description:         Credit Kata in Haskell
+License:             MIT
+Author:              Benjamin Augustin
+Build-Type:          Simple
+Cabal-Version:       >=1.2
+
+Executable credit
+    Main-is:           Main.hs
+    ghc-options:
+          -Wall -Werror
+    Build-Depends:     base

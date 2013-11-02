@@ -6,10 +6,10 @@ import Data.List
 getAllResults :: [(Int, [Int])] -> [(Maybe Int, Maybe Int)] -> [(Maybe Int, Maybe Int)]
 getAllResults [] results = results
 getAllResults ((total, items):rest) results = getAllResults rest ((processItems items total):results)
-    where processItems items total = getPositions (getValidPair (pairs items) total) items
+    where processItems its tot = getPositions (getValidPair (pairs its) tot) its
 
 getPositions :: Maybe (Int, Int) -> [Int] -> (Maybe Int, Maybe Int)
-getPositions Nothing items = (Nothing, Nothing)
+getPositions Nothing _ = (Nothing, Nothing)
 getPositions (Just (first, second)) items 
                                     | elemIndices first items == elemIndices second items = getOneIndexedPair (elemIndex first items) (Just (head . tail $ elemIndices second items))
                                     | otherwise = getOneIndexedPair (elemIndex first items) (elemIndex second items)

@@ -1,0 +1,13 @@
+Name:                ReverseWords
+Version:             1.0
+Description:         ReverseWords Kata in Haskell
+License:             MIT
+Author:              Benjamin Augustin
+Build-Type:          Simple
+Cabal-Version:       >=1.2
+
+Executable reversewords
+    Main-is:           Main.hs
+    ghc-options:
+          -Wall -Werror
+    Build-Depends:     base

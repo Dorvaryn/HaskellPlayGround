@@ -7,4 +7,4 @@ import Fibonacci
 main :: IO()
 main = do
     (n:_) <- getArgs
-    print $ fibonacci!!(read n)
+    print . fastestFibonacci $ read n
