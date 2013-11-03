@@ -53,11 +53,11 @@ changeCellStatus (pos, stat) ((oldPos, content, oldStat):rest)
                                                        | pos == oldPos = (pos, content, stat):rest
                                                        | otherwise = (oldPos, content, oldStat):(changeCellStatus (pos, stat) rest)
 
-playMove :: World -> Move -> World
-playMove world move = uncoverNeighbours move $ changeCellStatus move world
+playMove :: Move -> World -> World
+playMove move world = uncoverNeighbours move $ changeCellStatus move world
 
 uncoverNeighbours :: Move -> World -> World
-uncoverNeighbours (pos, _) world = foldl playMove world (discoverableMoves pos world)
+uncoverNeighbours (pos, _) world = foldr playMove world (discoverableMoves pos world)
 
 victory :: World -> Bool
 victory [] = True

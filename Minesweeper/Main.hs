@@ -56,7 +56,7 @@ getMove world = do
 
 play width world = do
     move <- getMove world
-    let nextWorld = playMove world move
+    let nextWorld = playMove move world
     if continueGame nextWorld then
         do
             putStrLn . unlines $ showWorld width nextWorld nextWorld
