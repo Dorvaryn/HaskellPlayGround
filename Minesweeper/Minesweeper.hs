@@ -18,6 +18,19 @@ hint pos world = numberMine (neighbours pos) world
 neighbours :: Position -> [Position]
 neighbours (first,second) = delete (first, second) [(first+x,second+y) | x <- [-1..1], y <- [-1..1]]
 
+positionToPlay :: Position -> Move
+positionToPlay pos = (pos, Played)
+
+discoverableMoves :: Position -> World -> [Move]
+discoverableMoves pos world = map positionToPlay $ discoverableNeighbours pos world
+
+discoverableNeighbours :: Position -> World -> [Position]
+discoverableNeighbours pos world = filter (discoverable world) (neighbours pos)
+
+discoverable :: World -> Position -> Bool
+discoverable world pos = (elem (pos, Empty, Marqued) world || elem (pos, Empty, None) world) && (hint pos world) == 0
+
+
 numberMine :: [Position] -> World -> Int
 numberMine [] game = 0
 numberMine (cell:cells) game
@@ -34,11 +47,17 @@ moveValid (pos, stat) world
                             | stat == None && elem (pos, Empty, Marqued) world = True
                             | otherwise = False
 
-playMove :: Move -> World -> World
-playMove _ [] = []
-playMove (pos, stat) ((oldPos, content, oldStat):rest)
+changeCellStatus :: Move -> World -> World
+changeCellStatus _ [] = []
+changeCellStatus (pos, stat) ((oldPos, content, oldStat):rest)
                                                        | pos == oldPos = (pos, content, stat):rest
-                                                       | otherwise = (oldPos, content, oldStat):(playMove (pos, stat) rest)
+                                                       | otherwise = (oldPos, content, oldStat):(changeCellStatus (pos, stat) rest)
+
+playMove :: World -> Move -> World
+playMove world move = uncoverNeighbours move $ playMove world move
+
+uncoverNeighbours :: Move -> World -> World
+uncoverNeighbours (pos, _) world = foldl playMove world (discoverableMoves pos world)
 
 victory :: World -> Bool
 victory [] = True
