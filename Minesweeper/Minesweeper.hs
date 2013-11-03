@@ -30,6 +30,8 @@ moveValid :: Move -> World -> Bool
 moveValid (pos, stat) world
                             | elem (pos, Empty, None) world = True
                             | elem (pos, Mine, None) world = True
+                            | stat == None && elem (pos, Mine, Marqued) world = True
+                            | stat == None && elem (pos, Empty, Marqued) world = True
                             | otherwise = False
 
 playMove :: Move -> World -> World

@@ -12,6 +12,7 @@ readPosition ('(':first:',':second:')':_) = (read $ first:"", read $ second:"")
 
 readPlay :: String -> Status
 readPlay "play" = Played
+readPlay "clear" = None
 readPlay _ = Marqued
 
 readMove :: String -> Move
@@ -35,7 +36,7 @@ showLine [] _ = ""
 showLine ((_, _, None):cells) world = '.':showLine cells world
 showLine ((_, Mine, Played):cells) world = 'x':showLine cells world
 showLine ((pos, Empty, Played):cells) world = (head . show $ hint pos world):showLine cells world
-showLine ((_, _, Marqued):cells) world = 'l':showLine cells world
+showLine ((_, _, Marqued):cells) world = 'm':showLine cells world
 
 showWorld :: Int -> [Cell] -> World -> [String]
 showWorld _ [] _ = []
