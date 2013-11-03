@@ -35,7 +35,10 @@ showLine :: [Cell] -> World -> String
 showLine [] _ = ""
 showLine ((_, _, None):cells) world = '.':showLine cells world
 showLine ((_, Mine, Played):cells) world = 'x':showLine cells world
-showLine ((pos, Empty, Played):cells) world = (head . show $ hint pos world):showLine cells world
+showLine ((pos, Empty, Played):cells) world 
+                                            | numHint == '0' = '-':showLine cells world
+                                            | otherwise = numHint:showLine cells world
+                                                where numHint = (head . show $ hint pos world)
 showLine ((_, _, Marqued):cells) world = 'm':showLine cells world
 
 showWorld :: Int -> [Cell] -> World -> [String]
@@ -54,7 +57,7 @@ getMove world = do
 play width world = do
     putStrLn . unlines $ showWorld width world world
     move <- getMove world
-    let nextWorld = playMove move world
+    let nextWorld = playMove world move
     if continueGame nextWorld then
         play width nextWorld
     else
