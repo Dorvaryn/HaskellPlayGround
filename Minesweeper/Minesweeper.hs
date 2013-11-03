@@ -61,8 +61,8 @@ uncoverNeighbours (pos, _) world = foldl playMove world (discoverableMoves pos w
 
 victory :: World -> Bool
 victory [] = True
-victory ((position, Empty, None):rest) = False
-victory ((position, Empty, Marqued):rest) = False
+victory ((position, Mine, None):rest) = False
+victory ((position, Mine, Played):rest) = False
 victory (cell:rest) = victory rest
 
 defeat :: World -> Bool

@@ -55,16 +55,19 @@ getMove world = do
         getMove world
 
 play width world = do
-    putStrLn . unlines $ showWorld width world world
     move <- getMove world
     let nextWorld = playMove world move
     if continueGame nextWorld then
-        play width nextWorld
+        do
+            putStrLn . unlines $ showWorld width nextWorld nextWorld
+            play width nextWorld
     else
-        if victory nextWorld then
-            putStrLn "Yeah!"
-        else
-            putStrLn "Bouh!"
+        do
+            if victory nextWorld then
+                putStrLn "Yeah!"
+            else
+                putStrLn "Bouh!"
+            putStrLn . unlines $ showWorld width nextWorld nextWorld;
 
 main :: IO()
 main = do
@@ -72,4 +75,5 @@ main = do
     file <- readFile fileName
     let width = length . head $ lines file
     let world = readWorld 0 $ lines file
+    putStrLn . unlines $ showWorld width world world
     play width world
