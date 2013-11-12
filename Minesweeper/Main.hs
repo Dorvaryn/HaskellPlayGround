@@ -33,11 +33,11 @@ readWorld x (l:lines) = (readLine x 1 l)++(readWorld (x+1) lines)
 
 showLine :: [Cell] -> World -> String
 showLine [] _ = ""
-showLine ((_, _, None):cells) world = '.':showLine cells world
-showLine ((_, Mine, Played):cells) world = 'x':showLine cells world
+showLine ((_, _, None):cells) world = '.':' ':showLine cells world
+showLine ((_, Mine, Played):cells) world = 'x':' ':showLine cells world
 showLine ((pos, Empty, Played):cells) world 
-                                            | numHint == '0' = '-':showLine cells world
-                                            | otherwise = numHint:showLine cells world
+                                            | numHint == '0' = '-':' ':showLine cells world
+                                            | otherwise = numHint:' ':showLine cells world
                                                 where numHint = (head . show $ hint pos world)
 showLine ((_, _, Marqued):cells) world = 'm':showLine cells world
 
@@ -71,9 +71,17 @@ play width world = do
 
 main :: IO()
 main = do
-    (fileName:_) <- getArgs
-    file <- readFile fileName
-    let width = length . head $ lines file
-    let world = readWorld 1 $ lines file
-    putStrLn . unlines $ showWorld width world world
-    play width world
+    args <- getArgs
+    if args /= [] then do
+        let fileName = head args
+        file <- readFile fileName
+        let width = length . head $ lines file
+        let world = readWorld 1 $ lines file
+        putStrLn . unlines $ showWorld width world world
+        play width world
+    else do
+        let width = 10
+        let world = generateGrid 10 10
+        putStrLn . unlines $ showWorld width world world
+        play width world
+
