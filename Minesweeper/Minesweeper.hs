@@ -3,14 +3,27 @@ where
 
 import Data.List
 import Control.Monad
+import System.Random
+import System.IO.Unsafe
 
 data Status = None | Played | Marqued deriving (Show, Eq)
-data Content = Empty | Mine deriving (Show, Eq)
+data Content = Empty | Mine deriving (Show, Eq, Bounded, Enum)
 
 type Position = (Integer, Integer)
 type Cell = (Position, Content, Status)
 type Move = (Position, Status)
 type World = [Cell]
+
+instance Random Content where
+    random g = case randomR (fromEnum (minBound :: Content), fromEnum (maxBound :: Content)) g of
+                 (r, g') -> (toEnum r, g')
+    randomR (a,b) g = case randomR (fromEnum a, fromEnum b) g of
+                        (r, g') -> (toEnum r, g')
+
+generateGrid :: Integer -> Integer -> World
+generateGrid m n = [((i,j), randomContent, None) | i <- [1..m], j <- [1..m]]
+
+randomContent = (head $ randoms $ unsafePerformIO newStdGen)::Content
 
 hint :: Position -> World -> Int
 hint pos world = numberMine (neighbours pos) world

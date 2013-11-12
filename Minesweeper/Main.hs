@@ -29,7 +29,7 @@ readLine x y (c:cars) = (readCell x y c):(readLine x (y+1) cars)
 
 readWorld :: Integer -> [String] -> World
 readWorld x [] = []
-readWorld x (l:lines) = (readLine x 0 l)++(readWorld (x+1) lines)
+readWorld x (l:lines) = (readLine x 1 l)++(readWorld (x+1) lines)
 
 showLine :: [Cell] -> World -> String
 showLine [] _ = ""
@@ -74,6 +74,6 @@ main = do
     (fileName:_) <- getArgs
     file <- readFile fileName
     let width = length . head $ lines file
-    let world = readWorld 0 $ lines file
+    let world = readWorld 1 $ lines file
     putStrLn . unlines $ showWorld width world world
     play width world
