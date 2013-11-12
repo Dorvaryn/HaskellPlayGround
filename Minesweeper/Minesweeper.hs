@@ -7,12 +7,21 @@ import System.Random
 import System.IO.Unsafe
 
 data Status = None | Played | Marqued deriving (Show, Eq)
-data Content = Empty | Mine deriving (Show, Eq, Bounded, Enum)
+data Content = Empty | Mine deriving (Show, Eq, Bounded)
 
 type Position = (Int, Int)
 type Cell = (Position, Content, Status)
 type Move = (Position, Status)
 type World = [Cell]
+
+instance Enum Content where
+    toEnum 0 = Empty
+    toEnum 1 = Empty
+    toEnum 2 = Empty
+    toEnum 3 = Mine
+
+    fromEnum Empty = 0
+    fromEnum Mine = 3
 
 instance Random Content where
     random g = case randomR (fromEnum (minBound :: Content), fromEnum (maxBound :: Content)) g of
@@ -69,6 +78,11 @@ playMove world move = uncoverNeighbours move $ changeCellStatus move world
 
 uncoverNeighbours :: Move -> World -> World
 uncoverNeighbours (pos, _) world = foldl playMove world (discoverableMoves pos world)
+
+uncoverMines :: World -> World
+uncoverMines [] = []
+uncoverMines ((pos, Mine, stat):cells) = ((pos, Mine, Played):uncoverMines cells)
+uncoverMines (any:cells) = any:(uncoverMines cells)
 
 victory :: World -> Bool
 victory [] = True

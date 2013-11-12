@@ -9,6 +9,7 @@ import Minesweeper
 
 readPosition :: String -> Position
 readPosition ('(':first:',':second:')':_) = (read $ first:"", read $ second:"")
+readPosition ('(':first:', ':second:')':_) = (read $ first:"", read $ second:"")
 
 readPlay :: String -> Status
 readPlay "play" = Played
@@ -63,11 +64,13 @@ play width world = do
             play width nextWorld
     else
         do
-            if victory nextWorld then
+            if victory nextWorld then do
                 putStrLn "Yeah!"
-            else
+                putStrLn . unlines $ showWorld width nextWorld nextWorld;
+            else do
                 putStrLn "Bouh!"
-            putStrLn . unlines $ showWorld width nextWorld nextWorld;
+                let endWorld = uncoverMines nextWorld
+                putStrLn . unlines $ showWorld width endWorld endWorld;
 
 main :: IO()
 main = do
