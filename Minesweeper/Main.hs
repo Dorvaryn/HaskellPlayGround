@@ -9,7 +9,6 @@ import Minesweeper
 
 readPosition :: String -> Position
 readPosition ('(':first:',':second:')':_) = (read $ first:"", read $ second:"")
-readPosition ('(':first:', ':second:')':_) = (read $ first:"", read $ second:"")
 
 readPlay :: String -> Status
 readPlay "play" = Played
@@ -40,7 +39,7 @@ showLine ((pos, Empty, Played):cells) world
                                             | numHint == '0' = '-':' ':showLine cells world
                                             | otherwise = numHint:' ':showLine cells world
                                                 where numHint = (head . show $ hint pos world)
-showLine ((_, _, Marqued):cells) world = 'm':showLine cells world
+showLine ((_, _, Marqued):cells) world = 'm':' ':showLine cells world
 
 showWorld :: Int -> [Cell] -> World -> [String]
 showWorld _ [] _ = []
