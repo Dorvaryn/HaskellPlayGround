@@ -18,16 +18,16 @@ readPlay _ = Marqued
 readMove :: String -> Move
 readMove input = (readPosition . head $ words input, readPlay . head . tail $ words input)
 
-readCell :: Integer -> Integer -> Char -> Cell
+readCell :: Int -> Int -> Char -> Cell
 readCell x y status
                     | status == '*' = ((x, y), Mine, None)
                     | otherwise = ((x, y), Empty, None)
 
-readLine :: Integer -> Integer -> String -> [Cell]
+readLine :: Int -> Int -> String -> [Cell]
 readLine x y [] = []
 readLine x y (c:cars) = (readCell x y c):(readLine x (y+1) cars)
 
-readWorld :: Integer -> [String] -> World
+readWorld :: Int -> [String] -> World
 readWorld x [] = []
 readWorld x (l:lines) = (readLine x 1 l)++(readWorld (x+1) lines)
 
