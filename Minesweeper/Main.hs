@@ -33,13 +33,13 @@ readWorld x (l:lines) = (readLine x 1 l)++(readWorld (x+1) lines)
 
 showLine :: [Cell] -> World -> String
 showLine [] _ = ""
-showLine ((_, _, None):cells) world = '.':' ':showLine cells world
-showLine ((_, Mine, Played):cells) world = 'x':' ':showLine cells world
+showLine ((_, _, None):cells) world = '¤':' ':showLine cells world
+showLine ((_, Mine, Played):cells) world = '*':' ':showLine cells world
 showLine ((pos, Empty, Played):cells) world 
                                             | numHint == '0' = '-':' ':showLine cells world
                                             | otherwise = numHint:' ':showLine cells world
                                                 where numHint = (head . show $ hint pos world)
-showLine ((_, _, Marqued):cells) world = 'm':' ':showLine cells world
+showLine ((_, _, Marqued):cells) world = 'f':' ':showLine cells world
 
 showWorld :: Int -> [Cell] -> World -> [String]
 showWorld _ [] _ = []
