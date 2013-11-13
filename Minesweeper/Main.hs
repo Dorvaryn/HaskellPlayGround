@@ -82,8 +82,8 @@ main = do
         putStrLn . unlines $ showWorld width world world
         play width world
     else do
-        let width = 10
-        let world = generateGrid 10 10
+        let width = 9
+        let world = generateGrid 9 9
         putStrLn . unlines $ showWorld width world world
         play width world
 
