@@ -7,20 +7,22 @@ import Control.Monad
 import Control.Monad.Loops
 import Minesweeper
 
-readPosition :: String -> Position
-readPosition ('(':first:',':second:')':_) = (read $ first:"", read $ second:"")
+readPosition :: [String] -> Position
+readPosition (first:second:_) = (read $ first, read $ second)
 
 readPlay :: String -> Status
 readPlay "play" = Played
+readPlay "p" = Played
+readPlay "c" = None
 readPlay "clear" = None
 readPlay _ = Marqued
 
 readMove :: String -> Move
-readMove input = (readPosition . head $ words input, readPlay . head . tail $ words input)
+readMove input = (readPosition . reverse . tail . reverse $ words input, readPlay . head . reverse $ words input)
 
 readCell :: Int -> Int -> Char -> Cell
 readCell x y status
-                    | status == '*' = ((x, y), Mine, None)
+                    | status == '@' = ((x, y), Mine, None)
                     | otherwise = ((x, y), Empty, None)
 
 readLine :: Int -> Int -> String -> [Cell]
@@ -34,7 +36,7 @@ readWorld x (l:lines) = (readLine x 1 l)++(readWorld (x+1) lines)
 showLine :: [Cell] -> World -> String
 showLine [] _ = ""
 showLine ((_, _, None):cells) world = '¤':' ':showLine cells world
-showLine ((_, Mine, Played):cells) world = '*':' ':showLine cells world
+showLine ((_, Mine, Played):cells) world = '@':' ':showLine cells world
 showLine ((pos, Empty, Played):cells) world 
                                             | numHint == '0' = '-':' ':showLine cells world
                                             | otherwise = numHint:' ':showLine cells world
