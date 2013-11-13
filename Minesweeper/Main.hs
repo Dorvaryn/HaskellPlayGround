@@ -18,28 +18,28 @@ readPlay _ = Marqued
 readMove :: String -> Move
 readMove input = (readPosition . head $ words input, readPlay . head . tail $ words input)
 
-readCell :: Integer -> Integer -> Char -> Cell
+readCell :: Int -> Int -> Char -> Cell
 readCell x y status
                     | status == '*' = ((x, y), Mine, None)
                     | otherwise = ((x, y), Empty, None)
 
-readLine :: Integer -> Integer -> String -> [Cell]
+readLine :: Int -> Int -> String -> [Cell]
 readLine x y [] = []
 readLine x y (c:cars) = (readCell x y c):(readLine x (y+1) cars)
 
-readWorld :: Integer -> [String] -> World
+readWorld :: Int -> [String] -> World
 readWorld x [] = []
-readWorld x (l:lines) = (readLine x 0 l)++(readWorld (x+1) lines)
+readWorld x (l:lines) = (readLine x 1 l)++(readWorld (x+1) lines)
 
 showLine :: [Cell] -> World -> String
 showLine [] _ = ""
-showLine ((_, _, None):cells) world = '.':showLine cells world
-showLine ((_, Mine, Played):cells) world = 'x':showLine cells world
+showLine ((_, _, None):cells) world = '.':' ':showLine cells world
+showLine ((_, Mine, Played):cells) world = 'x':' ':showLine cells world
 showLine ((pos, Empty, Played):cells) world 
-                                            | numHint == '0' = '-':showLine cells world
-                                            | otherwise = numHint:showLine cells world
+                                            | numHint == '0' = '-':' ':showLine cells world
+                                            | otherwise = numHint:' ':showLine cells world
                                                 where numHint = (head . show $ hint pos world)
-showLine ((_, _, Marqued):cells) world = 'm':showLine cells world
+showLine ((_, _, Marqued):cells) world = 'm':' ':showLine cells world
 
 showWorld :: Int -> [Cell] -> World -> [String]
 showWorld _ [] _ = []
@@ -63,17 +63,27 @@ play width world = do
             play width nextWorld
     else
         do
-            if victory nextWorld then
+            if victory nextWorld then do
                 putStrLn "Yeah!"
-            else
+                putStrLn . unlines $ showWorld width nextWorld nextWorld;
+            else do
                 putStrLn "Bouh!"
-            putStrLn . unlines $ showWorld width nextWorld nextWorld;
+                let endWorld = uncoverMines nextWorld
+                putStrLn . unlines $ showWorld width endWorld endWorld;
 
 main :: IO()
 main = do
-    (fileName:_) <- getArgs
-    file <- readFile fileName
-    let width = length . head $ lines file
-    let world = readWorld 0 $ lines file
-    putStrLn . unlines $ showWorld width world world
-    play width world
+    args <- getArgs
+    if args /= [] then do
+        let fileName = head args
+        file <- readFile fileName
+        let width = length . head $ lines file
+        let world = readWorld 1 $ lines file
+        putStrLn . unlines $ showWorld width world world
+        play width world
+    else do
+        let width = 10
+        let world = generateGrid 10 10
+        putStrLn . unlines $ showWorld width world world
+        play width world
+
