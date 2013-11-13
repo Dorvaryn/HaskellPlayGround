@@ -59,6 +59,7 @@ getMove world = do
 play width world = do
     move <- getMove world
     let nextWorld = playMove move world
+    system "clear"
     if continueGame nextWorld then
         do
             putStrLn . unlines $ showWorld width nextWorld nextWorld
@@ -81,11 +82,13 @@ main = do
         file <- readFile fileName
         let width = length . head $ lines file
         let world = readWorld 1 $ lines file
+        system "clear"
         putStrLn . unlines $ showWorld width world world
         play width world
     else do
         let width = 9
         let world = generateGrid 9 9
+        system "clear"
         putStrLn . unlines $ showWorld width world world
         play width world
 
