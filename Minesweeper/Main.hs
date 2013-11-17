@@ -18,7 +18,7 @@ readPlay "clear" = None
 readPlay _ = Marqued
 
 readMove :: String -> Move
-readMove input = (readPosition . reverse . tail . reverse $ words input, readPlay . head . reverse $ words input)
+readMove input = (readPosition . init $ words input, readPlay . last $ words input)
 
 readCell :: Int -> Int -> Char -> Cell
 readCell x y status
