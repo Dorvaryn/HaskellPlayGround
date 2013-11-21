@@ -1,7 +1,7 @@
 module RPNSolver
 where
 
-data Token a = Add | Sub | Mul | Div | Val a deriving Show
+data Token a = Add | Sub | Mul | Div | Ln | Sum | Pow | Val a deriving Show
 
 type Expression a = [Token a]
 
@@ -15,7 +15,7 @@ validate stack
 
 depth :: Integer -> Token a -> Integer
 depth d (Val _) = d + 1
-depth d _ = d - 1
+depth d Ln = d
 
 solveRPN :: Expression Double -> Double
 solveRPN xs = head $ foldl solve [] xs
@@ -28,12 +28,18 @@ readToken "+" = Add
 readToken "-" = Sub
 readToken "*" = Mul
 readToken "/" = Div
+readToken "ln" = Ln
+readToken "sum" = Sum
+readToken "^" = Pow
 readToken  v = Val $ read v
 
 solve :: Values Double -> Token Double -> Values Double
 solve xs (Val v) = v:xs
+solve (x:rest) Ln = (log x):rest
+solve xs Sum = [sum xs]
 solve (x:y:rest) op = (y `operation` x):rest
     where operation = case op of Add -> (+)
                                  Sub -> (-)
                                  Mul -> (*)
                                  Div -> (/)
+                                 Pow -> (**)
