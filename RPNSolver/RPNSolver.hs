@@ -5,12 +5,10 @@ data Token a = Add | Sub | Mul | Div | Val a deriving Show
 
 type Expression a = [Token a]
 
-fromToken :: Token Double -> Maybe Double
-fromToken (Val v) = Just v
-fromToken _ = Nothing
+type Values a = [a]
 
-solveRPN :: String -> Maybe Double
-solveRPN xs = fromToken . head $ foldl solve [] $ readExpression $ words xs
+solveRPN :: String -> Double
+solveRPN xs = head $ foldl solve [] $ readExpression $ words xs
 
 readExpression :: [String] -> Expression Double
 readExpression = map readToken
@@ -22,9 +20,9 @@ readToken "*" = Mul
 readToken "/" = Div
 readToken  v = Val $ read v
 
-solve :: Expression Double -> Token Double -> Expression Double
-solve xs (Val v) = Val v:xs
-solve (Val x:Val y:rest) op = (Val (y `operation` x)):rest
+solve :: Values Double -> Token Double -> Values Double
+solve xs (Val v) = v:xs
+solve (x:y:rest) op = (y `operation` x):rest
     where operation = case op of Add -> (+)
                                  Sub -> (-)
                                  Mul -> (*)
