@@ -7,8 +7,18 @@ type Expression a = [Token a]
 
 type Values a = [a]
 
-solveRPN :: String -> Double
-solveRPN xs = head $ foldl solve [] $ readExpression $ words xs
+validate :: Num a => Expression a -> Bool
+validate stack 
+    | stackDepth == 1 = True
+    | otherwise = False
+    where stackDepth = foldl depth 0 stack
+
+depth :: Integer -> Token a -> Integer
+depth d (Val _) = d + 1
+depth d _ = d - 1
+
+solveRPN :: Expression Double -> Double
+solveRPN xs = head $ foldl solve [] xs
 
 readExpression :: [String] -> Expression Double
 readExpression = map readToken
