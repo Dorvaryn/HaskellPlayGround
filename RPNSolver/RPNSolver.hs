@@ -16,7 +16,7 @@ validate stack
 depth :: Integer -> Token a -> Integer
 depth d (Val _) = d + 1
 depth d Ln = d
-depth d Sum = 1
+depth _ Sum = 1
 depth d _ = d - 1
 
 solveRPN :: Expression Double -> Double
@@ -45,3 +45,5 @@ solve (x:y:rest) op = (y `operation` x):rest
                                  Mul -> (*)
                                  Div -> (/)
                                  Pow -> (**)
+                                 _ -> error "Unrecognised operation"
+solve _ _ = error "This should never happen"
