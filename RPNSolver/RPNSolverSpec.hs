@@ -13,8 +13,6 @@ spec = do
             (solveRPN . readExpression $ words "10 4 3 + 2 * -") `shouldBe` -4
         it "(2 3 +)" $ do
             (solveRPN . readExpression $ words "2 3 +") `shouldBe` 5
-        it "(90 34 12 33 55 66 + * - +)" $ do
-            (solveRPN . readExpression $ words "90 34 12 33 55 66 + * - +") `shouldBe` -3947
         it "(90 34 12 33 55 66 + * - + -)" $ do
             (solveRPN . readExpression $ words "90 34 12 33 55 66 + * - + -") `shouldBe` 4037
         it "(90 3 -)" $ do
@@ -29,3 +27,22 @@ spec = do
             (solveRPN . readExpression $ words "10 2 ^") `shouldBe` 100
         it "(43.2425 0.5 ^)" $ do
             (solveRPN . readExpression $ words "43.2425 0.5 ^") `shouldBe` 6.575902979819578
+    describe "RPN Validation" $ do
+        it "(10 4 3 + 2 * -)" $ do
+            (validate . readExpression $ words "10 4 3 + 2 * -") `shouldBe` True
+        it "(2 3 +)" $ do
+            (validate . readExpression $ words "2 3 +") `shouldBe` True
+        it "(90 34 12 33 55 66 + * - + -)" $ do
+            (validate . readExpression $ words "90 34 12 33 55 66 + * - + -") `shouldBe` True
+        it "(90 3 -)" $ do
+            (validate . readExpression $ words "90 3 -") `shouldBe` True
+        it "(2.7 ln)" $ do
+            (validate . readExpression $ words "2.7 ln") `shouldBe` True
+        it "(10 10 10 10 sum 4 /)" $ do
+            (validate . readExpression $ words "10 10 10 10 sum 4 /") `shouldBe` True
+        it "(10 10 10 10 10 sum 4 /)" $ do
+            (validate . readExpression $ words "10 10 10 10 10 sum 4 /") `shouldBe` True
+        it "(10 2 ^)" $ do
+            (validate . readExpression $ words "10 2 ^") `shouldBe` True
+        it "(43.2425 0.5 ^)" $ do
+            (validate . readExpression $ words "43.2425 0.5 ^") `shouldBe` True

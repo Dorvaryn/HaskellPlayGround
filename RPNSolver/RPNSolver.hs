@@ -16,6 +16,8 @@ validate stack
 depth :: Integer -> Token a -> Integer
 depth d (Val _) = d + 1
 depth d Ln = d
+depth d Sum = 1
+depth d _ = d - 1
 
 solveRPN :: Expression Double -> Double
 solveRPN xs = head $ foldl solve [] xs
