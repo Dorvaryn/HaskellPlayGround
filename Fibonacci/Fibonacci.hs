@@ -18,7 +18,7 @@ canonicalFibonacci :: [Integer]
 canonicalFibonacci = 0 : 1 : zipWith (+) canonicalFibonacci (tail canonicalFibonacci)
 
 fibonacci :: [Integer]
-fibonacci = 0 : scanl (+) 1 fibonacci
+fibonacci = scanl (+) 0 $ 1:fibonacci
 
 
 -- Implementations under this line are not mine, examples of logarithmic implementations from haskell.org

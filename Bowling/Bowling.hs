@@ -1,7 +1,11 @@
-module Bowling ( score )
+module Bowling ( score , Play, Score)
 where
 
-score :: (Eq a, Num a) => [a] -> a
+type Play = Int
+type Score = Int
+
+--score :: (Eq a, Num a) => [a] -> a
+score :: [Play] -> Score
 score [] = 0
 score (x:[]) = x 
 score (x:y:[]) = x + y
