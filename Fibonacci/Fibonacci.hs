@@ -28,7 +28,7 @@ fastFibonacci n = head (apply (Matrix [[0,1], [1,1]] ^ n) [0,1])
 
 fastestFibonacci :: Int -> Integer
 fastestFibonacci n = snd . foldl' fib (1, 0) . dropWhile not $
-            [testBit n k | k <- let s = bitSize n in [s-1,s-2..0]]
+            [testBit n k | k <- let s = finiteBitSize n in [s-1,s-2..0]]
     where
         fib (f, g) p
             | p         = (f*(f+2*g), ss)
