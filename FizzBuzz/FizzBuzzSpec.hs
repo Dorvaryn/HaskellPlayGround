@@ -1,7 +1,6 @@
 module FizzBuzzSpec where
 
 import Test.Hspec
-import Test.QuickCheck
 import FizzBuzz
 
 main :: IO()

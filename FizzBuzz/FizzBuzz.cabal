@@ -11,3 +11,9 @@ Executable fizzbuzz
     ghc-options:
           -Wall -Werror
     Build-Depends:     base
+
+Test-Suite fizzbuzz-spec
+    Type:       exitcode-stdio-1.0
+    Main-is:    Spec.hs
+    Build-Depends: base
+                 , hspec
