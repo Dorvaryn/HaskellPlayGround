@@ -15,7 +15,7 @@ spec = do
             (score $ replicate 20 1) `shouldBe` 20
             (score $ replicate 20 3) `shouldBe` 60
         it "is adding next ball bonus if frame is spare" $ do
-            (score $ 5:5:3: (replicate 16 0)) `shouldBe` 16
+            (score $ 5:5:3: (replicate 17 0)) `shouldBe` 16
             (score $ 5:5: (replicate 18 1)) `shouldBe` 29
         it "is adding next two balls bonus if frame is strike" $ do
             (score $ 10:3:4: (replicate 16 0)) `shouldBe` 24
@@ -25,6 +25,6 @@ spec = do
         it "is 150 for all spares" $ do
             (score $ replicate 21 5) `shouldBe` 150
         it "is working for strike followed by spare" $ do
-            (score $ 10:5:5: (replicate 17 1)) `shouldBe` 48
+            (score $ 10:5:5: (replicate 16 1)) `shouldBe` 47
         it "is working for spare followed by strike" $ do
-            (score $ 10:5:5: (replicate 17 1)) `shouldBe` 48
+            (score $ 5:5:10: (replicate 16 1)) `shouldBe` 48
